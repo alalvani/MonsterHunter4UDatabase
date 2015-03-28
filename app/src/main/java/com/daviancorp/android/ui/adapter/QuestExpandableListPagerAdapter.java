@@ -12,8 +12,7 @@ public class QuestExpandableListPagerAdapter extends FragmentPagerAdapter {
     // TODO reenable when dlc quests are complete
     private String[] tabs = {
             QuestListCursorLoader.HUB_CARAVAN,
-            QuestListCursorLoader.HUB_GUILD,
-            QuestListCursorLoader.HUB_EVENT};
+            QuestListCursorLoader.HUB_GUILD};
 
 	public QuestExpandableListPagerAdapter(FragmentManager fm) {
 		super(fm);
@@ -29,10 +28,10 @@ public class QuestExpandableListPagerAdapter extends FragmentPagerAdapter {
 		case 1:
 			// Port Quests
 			return QuestExpandableListFragment.newInstance("Guild");
-		case 2:
-			// DLC Quests
-            //TODO reenable when DLC quests are complete.
-			return QuestExpandableListFragment.newInstance("Event");
+//		case 2:
+//			// DLC Quests
+//            //TODO reenable when DLC quests are complete.
+//			return QuestExpandableListFragment.newInstance("DLC");
 		default:
 			return null;
 		}
@@ -46,7 +45,7 @@ public class QuestExpandableListPagerAdapter extends FragmentPagerAdapter {
 	@Override
 	public int getCount() {
 		// get item count - equal to number of tabs
-		return 3;
+		return 2;
 	}
 
 }

@@ -44,7 +44,6 @@ public abstract class GenericTabActivity extends GenericActionBarActivity{
 
         setTitle(R.string.app_name);
         super.setupDrawer(); // Needs to be called after setContentView
-        // Disabled by request. Turns into BACK button
-        //super.enableDrawerIndicator(); // Enable drawer toggle button
+        super.enableDrawerIndicator(); // Enable drawer toggle button
 	}
 }

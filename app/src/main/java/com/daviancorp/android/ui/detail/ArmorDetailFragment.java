@@ -117,7 +117,7 @@ public class ArmorDetailFragment extends Fragment {
 		String cellImage = "";
 		String cellPart = "" + mArmor.getSlot();
 		String cellDefense = "" + mArmor.getDefense() + " (min) - " + mArmor.getMaxDefense() + " (max)";
-		String cellSlot = "" + mArmor.getSlotString();
+		String cellSlot = "" + mArmor.getNumSlots();
 		String cellRare = "" + mArmor.getRarity();
 		String cellBuy = "" + mArmor.getBuy() + "z";
 		
