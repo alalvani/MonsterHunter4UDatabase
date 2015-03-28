@@ -6,6 +6,7 @@ import android.support.v4.app.FragmentPagerAdapter;
 import com.daviancorp.android.data.classes.ArmorSetBuilderSession;
 import com.daviancorp.android.ui.detail.ArmorSetBuilderFragment;
 import com.daviancorp.android.ui.list.ArmorSetBuilderSkillsListFragment;
+import com.daviancorp.android.ui.list.ArmorSetBuilderStatsListFragment;
 
 /**
  * Well that name is a mouthful.
@@ -14,7 +15,7 @@ public class ArmorSetBuilderPagerAdapter extends FragmentPagerAdapter {
 
     private ArmorSetBuilderSession session;
 
-    private String[] tabs = {"Pieces", "Skills"};
+    private String[] tabs = {"Pieces", "Skills", "Stats"};
 
     public ArmorSetBuilderPagerAdapter(FragmentManager fm, ArmorSetBuilderSession session) {
         super(fm);
@@ -30,6 +31,9 @@ public class ArmorSetBuilderPagerAdapter extends FragmentPagerAdapter {
             case 1:
                 // Skills view tab
                 return ArmorSetBuilderSkillsListFragment.newInstance(session);
+            case 2:
+                //Stats view tab
+                return ArmorSetBuilderStatsListFragment.newInstance(session);
             default:
                 // Something went wrong oh god
                 return null;
@@ -43,7 +47,7 @@ public class ArmorSetBuilderPagerAdapter extends FragmentPagerAdapter {
 
     @Override
     public int getCount() {
-        return 2;
+        return tabs.length;
     }
 
 }

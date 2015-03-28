@@ -87,6 +87,8 @@
     <string name="armor_set_builder_legs">Legs</string>
     <string name="armor_set_builder_skill_name">Skill</string>
     <string name="armor_set_builder_skill_points_total">Total</string>
+    <string name="armor_set_builder_stat_name">Stat</string>
+    <string name="armor_set_builder_stat_points_total">Total</string>
 
 
     <string name="placeholder_unknown">Unknown</string>
