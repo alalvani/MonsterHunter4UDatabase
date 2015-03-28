@@ -33,7 +33,6 @@ public class ArmorSetBuilderSession {
     private Decoration[][] decorations;
 
     private List<SkillTreePointsSet> skillTreePointsSets;
-    private List<StatPointsSet> statPointsSets;
 
     private List<OnArmorSetChangedListener> changedListeners;
 
@@ -55,7 +54,6 @@ public class ArmorSetBuilderSession {
         }
 
         skillTreePointsSets = new ArrayList<>();
-        statPointsSets = new ArrayList<>();
 
         changedListeners = new ArrayList<>();
     }
@@ -197,71 +195,26 @@ public class ArmorSetBuilderSession {
         return skillTreePointsSets;
     }
 
-    public List<StatPointsSet> getStatPointsSets() {
-        return statPointsSets;
-    }
 
-    /**
-     * Adds any skills to the armor set's skill trees that were not there before, and removes those no longer there.
-     */
-    public void updateStatPointsSets(Context context) {
-        StatPointsSet defense    = new StatPointsSet("Min Defense");
-        StatPointsSet maxDefense = new StatPointsSet("Max Defense");
-        StatPointsSet fireRes    = new StatPointsSet("Fire Resist");
-        StatPointsSet thunderRes = new StatPointsSet("Thunder Resist");
-        StatPointsSet dragonRes  = new StatPointsSet("Dragon Resist");
-        StatPointsSet waterRes   = new StatPointsSet("Water Resist");
-        StatPointsSet iceRes     = new StatPointsSet("Ice Resist");
-        StatPointsSet numSlots   = new StatPointsSet("Number of Slots");
-
-        for (int i = 0; i < armors.length; i++)
-        {
-            if (armors[i].getId() < 0)
-            {
-                defense.setPoints(i, 0);
-                maxDefense.setPoints(i, 0);
-                fireRes.setPoints(i, 0);
-                thunderRes.setPoints(i, 0);
-                dragonRes.setPoints(i, 0);
-                waterRes.setPoints(i, 0);
-                iceRes.setPoints(i, 0);
-                numSlots.setPoints(i, 0);
-            }
-            else
-            {
-                defense.setPoints(i, armors[i].getDefense());
-                maxDefense.setPoints(i, armors[i].getMaxDefense());
-                fireRes.setPoints(i, armors[i].getFireRes());
-                thunderRes.setPoints(i, armors[i].getThunderRes());
-                dragonRes.setPoints(i, armors[i].getDragonRes());
-                waterRes.setPoints(i, armors[i].getWaterRes());
-                iceRes.setPoints(i, armors[i].getIceRes());
-                numSlots.setPoints(i, armors[i].getNumSlots());
-            }
-        }
-        statPointsSets.clear();
-        statPointsSets.add(defense);
-        statPointsSets.add(maxDefense);
-        statPointsSets.add(fireRes);
-        statPointsSets.add(thunderRes);
-        statPointsSets.add(dragonRes);
-        statPointsSets.add(waterRes);
-        statPointsSets.add(iceRes);
-        statPointsSets.add(numSlots);
-    }
 
     /**
      * Adds any skills to the armor set's skill trees that were not there before, and removes those no longer there.
      */
     public void updateSkillTreePointsSets(Context context) {
 
+        /* A map of the current skill trees' ID's in the set and their associated SkillTreePointsSets */
+        Map<Long, SkillTreePointsSet> skillTreeToSkillTreePointsSet = new HashMap<>();
         skillTreePointsSets.clear();
+        updateStatPointsSets();
 
-        Map<Long, SkillTreePointsSet> skillTreeToSkillTreePointsSet = new HashMap<>(); // A map of the current skill trees' ID's in the set and their associated SkillTreePointsSets
+        /* empty points to seperate armor stats from skills */
+        SkillTreePointsSet separator    = new SkillTreePointsSet(" ");
+        skillTreePointsSets.add(separator);
+        skillTreePointsSets.add(separator);
 
-        for (SkillTreePointsSet pointsSet : skillTreePointsSets) {
-            skillTreeToSkillTreePointsSet.put(pointsSet.getSkillTree().getId(), pointsSet);
-        }
+//        for (SkillTreePointsSet pointsSet : skillTreePointsSets) {
+//            skillTreeToSkillTreePointsSet.put(pointsSet.getSkillTree().getId(), pointsSet);
+//        }
 
         for (int i = 0; i < armors.length; i++) {
 
@@ -331,81 +284,72 @@ public class ArmorSetBuilderSession {
         }
     }
 
+    /**
+     * a helper method that adds the stat points of the armor.
+     */
+    private void updateStatPointsSets() {
+        SkillTreePointsSet defense    = new SkillTreePointsSet("Min Defense");
+        SkillTreePointsSet maxDefense = new SkillTreePointsSet("Max Defense");
+        SkillTreePointsSet fireRes    = new SkillTreePointsSet("Fire Resist");
+        SkillTreePointsSet thunderRes = new SkillTreePointsSet("Thunder Resist");
+        SkillTreePointsSet dragonRes  = new SkillTreePointsSet("Dragon Resist");
+        SkillTreePointsSet waterRes   = new SkillTreePointsSet("Water Resist");
+        SkillTreePointsSet iceRes     = new SkillTreePointsSet("Ice Resist");
+        SkillTreePointsSet numSlots   = new SkillTreePointsSet("Number of Slots");
+
+        for (int i = 0; i < armors.length; i++)
+        {
+            if (armors[i].getId() < 0)
+            {
+                defense.setPoints(i, 0);
+                maxDefense.setPoints(i, 0);
+                fireRes.setPoints(i, 0);
+                thunderRes.setPoints(i, 0);
+                dragonRes.setPoints(i, 0);
+                waterRes.setPoints(i, 0);
+                iceRes.setPoints(i, 0);
+                numSlots.setPoints(i, 0);
+            }
+            else
+            {
+                defense.setPoints(i, armors[i].getDefense());
+                maxDefense.setPoints(i, armors[i].getMaxDefense());
+                fireRes.setPoints(i, armors[i].getFireRes());
+                thunderRes.setPoints(i, armors[i].getThunderRes());
+                dragonRes.setPoints(i, armors[i].getDragonRes());
+                waterRes.setPoints(i, armors[i].getWaterRes());
+                iceRes.setPoints(i, armors[i].getIceRes());
+                numSlots.setPoints(i, armors[i].getNumSlots());
+            }
+        }
+        skillTreePointsSets.clear();
+        skillTreePointsSets.add(defense);
+        skillTreePointsSets.add(maxDefense);
+        skillTreePointsSets.add(fireRes);
+        skillTreePointsSets.add(thunderRes);
+        skillTreePointsSets.add(dragonRes);
+        skillTreePointsSets.add(waterRes);
+        skillTreePointsSets.add(iceRes);
+        skillTreePointsSets.add(numSlots);
+    }
+
     public static interface OnArmorSetChangedListener {
         public void onArmorSetChanged();
     }
 
-    /**
-     * A container class that represents a stat as well as a specific number of points provided by each armor piece in a set.
-     */
-    public static class StatPointsSet {
-        private String statName;
-        private int[] points;
-
-        public StatPointsSet(String statName) {
-            this.statName = statName;
-            points = new int[5];
-        }
-
-        public String getStatName() {
-            return statName;
-        }
-
-        public int getHeadPoints() {
-            return points[HEAD];
-        }
-
-        public int getBodyPoints() {
-            return points[BODY];
-        }
-
-        public int getArmsPoints() {
-            return points[ARMS];
-        }
-
-        public int getWaistPoints() {
-            return points[WAIST];
-        }
-
-        public int getLegsPoints() {
-            return points[LEGS];
-        }
-
-        public int getPoints(int pieceIndex) {
-            if (pieceIndex < 5) {
-                return points[pieceIndex];
-            } else {
-                throw new IllegalArgumentException("Please use a number from 0 to 4 when selecting an armor piece index.");
-            }
-        }
-
-        /**
-         * @return The total number of skill points provided to the skill by all pieces in the set.
-         */
-        public int getTotal() {
-            int total = 0;
-            for (int piecePoints : points) {
-                total += piecePoints;
-            }
-            return total;
-        }
-
-        public void setSkillTree(String statName) {
-            this.statName = statName;
-        }
-
-        public void setPoints(int pieceIndex, int piecePoints) {
-            points[pieceIndex] = piecePoints;
-        }
-    }
-
-    /**
+     /**
      * A container class that represents a skill tree as well as a specific number of points provided by each armor piece in a set.
      */
     public static class SkillTreePointsSet {
 
         private SkillTree skillTree;
+        private String statName;
         private int[] points;
+
+        public SkillTreePointsSet(String statName) {
+            points = new int[5];
+            this.statName = statName;
+        }
 
         public SkillTreePointsSet() {
             points = new int[5];
@@ -413,6 +357,10 @@ public class ArmorSetBuilderSession {
 
         public SkillTree getSkillTree() {
             return skillTree;
+        }
+
+        public String getStatName() {
+            return (skillTree != null) ? skillTree.getName() : statName;
         }
 
         public int getHeadPoints() {
@@ -456,6 +404,10 @@ public class ArmorSetBuilderSession {
 
         public void setSkillTree(SkillTree skillTree) {
             this.skillTree = skillTree;
+        }
+
+        public void setStatName(String statName) {
+            this.statName = statName;
         }
 
         public void setPoints(int pieceIndex, int piecePoints) {

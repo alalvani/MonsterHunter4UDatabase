@@ -6,7 +6,6 @@ import android.support.v4.app.FragmentPagerAdapter;
 import com.daviancorp.android.data.classes.ArmorSetBuilderSession;
 import com.daviancorp.android.ui.detail.ArmorSetBuilderFragment;
 import com.daviancorp.android.ui.list.ArmorSetBuilderSkillsListFragment;
-import com.daviancorp.android.ui.list.ArmorSetBuilderStatsListFragment;
 
 /**
  * Well that name is a mouthful.
@@ -15,7 +14,7 @@ public class ArmorSetBuilderPagerAdapter extends FragmentPagerAdapter {
 
     private ArmorSetBuilderSession session;
 
-    private String[] tabs = {"Pieces", "Skills", "Stats"};
+    private String[] tabs = {"Pieces", "Skills", "Display", "Components", "Search", "Results"};
 
     public ArmorSetBuilderPagerAdapter(FragmentManager fm, ArmorSetBuilderSession session) {
         super(fm);
@@ -29,11 +28,20 @@ public class ArmorSetBuilderPagerAdapter extends FragmentPagerAdapter {
                 // Main builder tab
                 return ArmorSetBuilderFragment.newInstance();
             case 1:
-                // Skills view tab
+                // Skills and stats view tab
                 return ArmorSetBuilderSkillsListFragment.newInstance(session);
             case 2:
-                //Stats view tab
-                return ArmorSetBuilderStatsListFragment.newInstance(session);
+                // Fashion Hunter view tab
+                return ArmorSetBuilderSkillsListFragment.newInstance(session);
+            case 3:
+                // Components Tab
+                return ArmorSetBuilderFragment.newInstance();
+            case 4:
+                // Search tab
+                return ArmorSetBuilderSkillsListFragment.newInstance(session);
+            case 5:
+                // Search Results tab
+                return ArmorSetBuilderSkillsListFragment.newInstance(session);
             default:
                 // Something went wrong oh god
                 return null;
