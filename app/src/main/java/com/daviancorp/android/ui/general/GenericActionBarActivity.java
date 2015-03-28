@@ -6,7 +6,6 @@ import android.content.res.Configuration;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
@@ -30,6 +29,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.daviancorp.android.mh4udatabase.R;
+import com.daviancorp.android.ui.detail.ArmorSetBuilderActivity;
 import com.daviancorp.android.ui.dialog.AboutDialogFragment;
 import com.daviancorp.android.ui.list.ArmorListActivity;
 import com.daviancorp.android.ui.list.CombiningListActivity;
@@ -60,18 +60,7 @@ public abstract class GenericActionBarActivity extends ActionBarActivity {
     private DrawerAdapter mDrawerAdapter;
     public ActionBarDrawerToggle mDrawerToggle;
     public DrawerLayout mDrawerLayout;
-    private Handler mHandler;
-
-    // start drawer in the closed position unless otherwise specified
     private static boolean drawerOpened = false;
-
-    // delay to launch nav drawer item, to allow close animation to play
-    private static final int NAVDRAWER_LAUNCH_DELAY = 250;
-
-    // fade in and fade out durations for the main content when switching between
-    // different Activities of the app through the Nav Drawer
-    private static final int MAIN_CONTENT_FADEOUT_DURATION = 150; // Unused until fade out animation is properly implemented
-    private static final int MAIN_CONTENT_FADEIN_DURATION = 250;
 
     public interface ActionOnCloseListener {
         void actionOnClose();
@@ -83,9 +72,6 @@ public abstract class GenericActionBarActivity extends ActionBarActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        // Handler to implement drawer delay and runnable
-        mHandler = new Handler();
     }
 
 
@@ -98,15 +84,52 @@ public abstract class GenericActionBarActivity extends ActionBarActivity {
         addDrawerItems();
         mDrawerList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                // Set navigation actions
+                Intent intent = new Intent();
 
-                // Wait for drawer to close. This actually waits too long. Turn it into a runnable.
-                mHandler.postDelayed(new Runnable() {
+                switch (position) {
+                    case 0: // Monsters
+                        intent = new Intent(getApplicationContext(), MonsterListActivity.class);
+                        break;
+                    case 1: // Weapons
+                        intent = new Intent(getApplicationContext(), WeaponSelectionListActivity.class);
+                        break;
+                    case 2: // Armor
+                        intent = new Intent(getApplicationContext(), ArmorListActivity.class);
+                        break;
+                    case 3: // Quests
+                        intent = new Intent(getApplicationContext(), QuestListActivity.class);
+                        break;
+                    case 4: // Items
+                        intent = new Intent(getApplicationContext(), ItemListActivity.class);
+                        break;
+                    case 5: // Combining
+                        intent = new Intent(getApplicationContext(), CombiningListActivity.class);
+                        break;
+                    case 6: // Locations
+                        intent = new Intent(getApplicationContext(), LocationListActivity.class);
+                        break;
+                    case 7: // Decorations
+                        intent = new Intent(getApplicationContext(), DecorationListActivity.class);
+                        break;
+                    case 8: // Skill Trees
+                        intent = new Intent(getApplicationContext(), SkillTreeListActivity.class);
+                        break;
+                    case 9: // Wishlists
+                        intent = new Intent(getApplicationContext(), WishlistListActivity.class);
+                        break;
+                    case 10:
+                        intent = new Intent(getApplicationContext(), ArmorSetBuilderActivity.class);
+                        break;
+                }
+                final Intent finalIntent = intent;
+                actionOnCloseListener = new ActionOnCloseListener() {
                     @Override
-                    public void run() {
-                        goToNavDrawerItem(position);
+                    public void actionOnClose() {
+                        startActivity(finalIntent);
                     }
-                }, NAVDRAWER_LAUNCH_DELAY);
+                };
 
                 mDrawerLayout.closeDrawers();
             }
@@ -141,54 +164,6 @@ public abstract class GenericActionBarActivity extends ActionBarActivity {
         }
     }
 
-    // Go to nav drawer selection
-    private void goToNavDrawerItem(int itemId){
-        // Set navigation actions
-        Intent intent = new Intent();
-
-        switch (itemId) {
-            case 0: // Monsters
-                intent = new Intent(GenericActionBarActivity.this, MonsterListActivity.class);
-                break;
-            case 1: // Weapons
-                intent = new Intent(GenericActionBarActivity.this, WeaponSelectionListActivity.class);
-                break;
-            case 2: // Armor
-                intent = new Intent(GenericActionBarActivity.this, ArmorListActivity.class);
-                break;
-            case 3: // Quests
-                intent = new Intent(GenericActionBarActivity.this, QuestListActivity.class);
-                break;
-            case 4: // Items
-                intent = new Intent(GenericActionBarActivity.this, ItemListActivity.class);
-                break;
-            case 5: // Combining
-                intent = new Intent(GenericActionBarActivity.this, CombiningListActivity.class);
-                break;
-            case 6: // Locations
-                intent = new Intent(GenericActionBarActivity.this, LocationListActivity.class);
-                break;
-            case 7: // Decorations
-                intent = new Intent(GenericActionBarActivity.this, DecorationListActivity.class);
-                break;
-            case 8: // Skill Trees
-                intent = new Intent(GenericActionBarActivity.this, SkillTreeListActivity.class);
-                break;
-            case 9: // Wishlists
-                intent = new Intent(GenericActionBarActivity.this, WishlistListActivity.class);
-                break;
-        }
-        final Intent finalIntent = intent;
-
-        // Clear the back stack whenever a nav drawer item is selected
-        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-
-        startActivity(finalIntent);
-
-        // Clear default animation
-        overridePendingTransition(0, 0);
-    }
-
     // Set up drawer menu options
     private void addDrawerItems() {
         String[] menuArray = getResources().getStringArray(R.array.drawer_items);
@@ -197,20 +172,19 @@ public abstract class GenericActionBarActivity extends ActionBarActivity {
         mDrawerList.setAdapter(mDrawerAdapter);
     }
 
+
     public void enableDrawerIndicator() {
         mDrawerToggle.setDrawerIndicatorEnabled(true);
+    }
+
+    public void disableDrawerIndicator() {
+        mDrawerToggle.setDrawerIndicatorEnabled(false);
     }
 
     // Sync button animation sync with drawer state
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
-
-        // Animate fade in
-        View mainContent = findViewById(R.id.fragment_container);
-        if(mainContent != null){
-            mainContent.animate().alpha(1).setDuration(MAIN_CONTENT_FADEIN_DURATION);
-        }
         mDrawerToggle.syncState();
     }
 
@@ -241,14 +215,6 @@ public abstract class GenericActionBarActivity extends ActionBarActivity {
 
         // Detect home and or expansion menu item selections
         switch (item.getItemId()) {
-
-            case android.R.id.home:
-                // Detect back/up button is pressed
-                // Finish current activity and pop it off the stack.
-                // Basically a back button.
-                this.finish();
-                return true;
-
             case R.id.about:
                 FragmentManager fm = getSupportFragmentManager();
                 AboutDialogFragment dialog = new AboutDialogFragment();

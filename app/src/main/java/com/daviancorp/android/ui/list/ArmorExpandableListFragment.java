@@ -8,12 +8,8 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseExpandableListAdapter;
-import android.widget.ExpandableListView;
+import android.widget.*;
 import android.widget.ExpandableListView.OnChildClickListener;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import com.daviancorp.android.data.classes.Armor;
 import com.daviancorp.android.data.classes.Item;
@@ -21,6 +17,7 @@ import com.daviancorp.android.data.database.DataManager;
 import com.daviancorp.android.mh4udatabase.R;
 import com.daviancorp.android.ui.ClickListeners.ArmorClickListener;
 import com.daviancorp.android.ui.detail.ArmorDetailActivity;
+import com.daviancorp.android.ui.detail.ArmorSetBuilderActivity;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -65,7 +62,6 @@ public class ArmorExpandableListFragment extends Fragment {
             mType = args.getString(ARG_TYPE);
         }
         populateList();
-
     }
 
     private void populateList() {
@@ -100,12 +96,12 @@ public class ArmorExpandableListFragment extends Fragment {
                     break;
             }
         }
+
         children.add(g1);
         children.add(g2);
         children.add(g3);
         children.add(g4);
         children.add(g5);
-
     }
 
     @Override
@@ -121,22 +117,25 @@ public class ArmorExpandableListFragment extends Fragment {
 
         elv.setAdapter(new ArmorListAdapter(slots));
 
-        elv.setOnChildClickListener(new OnChildClickListener() {
-
-            @Override
-            public boolean onChildClick(ExpandableListView arg0, View arg1,
-                                        int arg2, int arg3, long id) {
-
-                Intent i = new Intent(getActivity(), ArmorDetailActivity.class);
-                i.putExtra(ArmorDetailActivity.EXTRA_ARMOR_ID, (long) arg1.getTag());
-                startActivity(i);
-
-                return false;
-            }
-        });
+//        elv.setOnChildClickListener(new OnChildClickListener() {
+//
+//            @Override
+//            public boolean onChildClick(ExpandableListView arg0, View arg1,
+//                                        int arg2, int arg3, long id) {
+//
+//                Intent i = new Intent(getActivity(), ArmorDetailActivity.class);
+//                i.putExtra(ArmorDetailActivity.EXTRA_ARMOR_ID, (long) arg1.getTag());
+//
+//                startActivity(i);
+//
+//                return false;
+//            }
+//        });
 
         return v;
     }
+
+
 
     public class ArmorListAdapter extends BaseExpandableListAdapter {
 
@@ -202,6 +201,20 @@ public class ArmorExpandableListFragment extends Fragment {
 
             armorGroupTextView.setText(getGroup(i).toString());
 
+            if (getActivity().getIntent().getBooleanExtra(ArmorSetBuilderActivity.EXTRA_FROM_SET_BUILDER, false)) {
+                int piece = getActivity().getIntent().getIntExtra(ArmorSetBuilderActivity.EXTRA_PIECE_INDEX, -1);
+
+                if (piece != -1) {
+                    elv.setDividerHeight(0);
+                    if (i != piece) {
+                        v = new FrameLayout(context); // We hide the group if it's not the type of armor we're looking for
+                    }
+                    else {
+                        elv.expandGroup(i);
+                    }
+                }
+            }
+
             return v;
         }
 
@@ -247,7 +260,7 @@ public class ArmorExpandableListFragment extends Fragment {
             long armorId = ((Armor) getChild(groupPosition, childPosition)).getId();
 
             root.setTag(armorId);
-            root.setOnClickListener(new ArmorClickListener(context, armorId));
+            root.setOnClickListener(new ArmorClickListener(context, armorId, getActivity().getIntent().getBooleanExtra(ArmorSetBuilderActivity.EXTRA_FROM_SET_BUILDER, false), getActivity()));
 
             return v;
 
