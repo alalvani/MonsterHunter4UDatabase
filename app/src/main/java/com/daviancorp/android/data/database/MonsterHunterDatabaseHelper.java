@@ -2263,7 +2263,24 @@ class MonsterHunterDatabaseHelper extends SQLiteAssetHelper {
 //		
 //		return new SkillCursor(wrapHelper());
 //	}	
-	
+
+    public SkillCursor queryAllSkills() {
+        // "SELECT * FROM skills WHERE skill_tree_id = id"
+
+        QueryHelper qh = new QueryHelper();
+        qh.Distinct = false;
+        qh.Table = S.TABLE_SKILLS;
+        qh.Columns = null;
+        qh.Selection = null;
+        qh.SelectionArgs = null;
+        qh.GroupBy = null;
+        qh.Having = null;
+        qh.OrderBy = null;
+        qh.Limit = null;
+
+        return new SkillCursor(wrapHelper(qh));
+    }
+
 	/*
 	 * Get all skills for a skill tree
 	 */

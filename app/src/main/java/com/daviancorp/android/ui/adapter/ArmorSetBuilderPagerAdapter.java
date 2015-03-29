@@ -5,6 +5,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import com.daviancorp.android.data.classes.ArmorSetBuilderSession;
 import com.daviancorp.android.ui.detail.ArmorSetBuilderFragment;
+import com.daviancorp.android.ui.detail.ArmorSetBuilderSearchFragment;
 import com.daviancorp.android.ui.list.ArmorSetBuilderSkillsListFragment;
 
 /**
@@ -38,7 +39,7 @@ public class ArmorSetBuilderPagerAdapter extends FragmentPagerAdapter {
                 return ArmorSetBuilderFragment.newInstance();
             case 4:
                 // Search tab
-                return ArmorSetBuilderSkillsListFragment.newInstance(session);
+                return ArmorSetBuilderSearchFragment.newInstance();
             case 5:
                 // Search Results tab
                 return ArmorSetBuilderSkillsListFragment.newInstance(session);

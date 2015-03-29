@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content">
+
+    <Switch
+        android:id="@+id/switch_class"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Armor Class: "
+        android:textOn="BladeMaster"
+        android:textOff="Gunner"
+        />
+    <Switch
+        android:id="@+id/switch_gender"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Armor Gender: "
+        android:textOn="Male"
+        android:textOff="Female"
+        />
+
+    <Switch
+        android:id="@+id/armor_builder_allow_bad_skills"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Allow Bad Skills (NO WORK)" />
+
+    <Switch
+        android:id="@+id/armor_builder_allow_arena_armor"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Allow Arena Armor (NO WORK)" />
+
+    <Switch
+        android:id="@+id/armor_builder_allow_event_armor"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Allow Event Armor (NO WORK)" />
+
+    <Switch
+        android:id="@+id/armor_builder_allow_excavated_armor"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Allow Excavated Armor (NO WORK)" />
+
+    <Switch
+        android:id="@+id/armor_builder_allow_excavated_weapon"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Allow Excavated Weapon (NO WORK)" />
+
+    <Switch
+        android:id="@+id/armor_builder_allow_lower_tier_armor"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Allow Lower Tier Armor (NO WORK)" />
+
+    <Button
+        android:id="@+id/skill_list_add_skill_button"
+        android:text="@string/armor_set_builder_search_add_skill"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="addRowBtn" />
+
+    <!--<Spinner-->
+        <!--android:id="@+id/skill_list_add_skill_spinner"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content" />-->
+
+
+</LinearLayout>

@@ -853,12 +853,27 @@ public class DataManager {
 //	public SkillCursor querySkill(long id) {
 //		return mHelper.querySkill(id);
 //	}
-	
+
+
 	/* Get a Cursor that has a list of all Skills from a specific SkillTree */
 	public SkillCursor querySkillFromTree(long id) {
 		return mHelper.querySkillFromTree(id);
 	}
-	
+
+    /* Get an array of all Skills */
+    public ArrayList<Skill> querySkillsArray() {
+        ArrayList<Skill> skills = new ArrayList<Skill>();
+        SkillCursor cursor = mHelper.queryAllSkills();
+        cursor.moveToFirst();
+
+        while(!cursor.isAfterLast()) {
+            skills.add(cursor.getSkill());
+            cursor.moveToNext();
+        }
+        cursor.close();
+        return skills;
+    }
+
 	/* Get an array of Skill from a specific SkillTree */
 	public ArrayList<Skill> querySkillArray(long id) {
 		ArrayList<Skill> skills = new ArrayList<Skill>();
