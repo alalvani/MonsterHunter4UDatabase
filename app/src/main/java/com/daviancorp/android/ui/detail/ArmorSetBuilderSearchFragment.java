@@ -131,8 +131,8 @@ public class ArmorSetBuilderSearchFragment extends Fragment implements ArmorSetB
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == SKILL_PICKER_REQUEST_CODE){
-            long skillId = data.getLongExtra("skillId", -1);;
-            long skillPoints = data.getIntExtra("skillPoints", -1);;
+            long skillId = data.getLongExtra("skillId", -1);
+            long skillPoints = data.getIntExtra("skillPoints", -1);
             long skillTreeId = data.getLongExtra("skillTreeId", -1);
             if (skillTreeId > -1) st.add(DataManager.get(context).getSkillTree(skillTreeId));
             listAdapter.notifyDataSetChanged();
