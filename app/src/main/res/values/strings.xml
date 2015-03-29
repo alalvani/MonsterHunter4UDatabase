@@ -43,6 +43,7 @@
         <item>"Skill Trees,icons_items/Monster-Jewel-White.png"</item>
         <item>"Wishlists,icons_items/Mantle-White.png"</item>
         <item>"Armor Set Builder,icons_items/Mantle-White.png"</item>
+        <item>"Armor Set Search,icons_items/Mantle-White.png"</item>
     </string-array> 
 
     <string name="option_list">List</string>
@@ -87,8 +88,19 @@
     <string name="armor_set_builder_legs">Legs</string>
     <string name="armor_set_builder_skill_name">Skill</string>
     <string name="armor_set_builder_skill_points_total">Total</string>
-    <string name="armor_set_builder_search_add_skill">Add Skill</string>
-    <string name="armor_set_builder_search_button">Search</string>
+
+    <string name="activity_armor_set_search">Armor Set Search</string>
+    <string name="armor_set_search_switch_class">Armor Class</string>
+    <string name="armor_set_search_switch_gender">Armor Gender</string>
+    <string name="armor_set_search_allow_bad_skills">Allow Bad Skills (NO WORK)</string>
+    <string name="armor_set_search_allow_arena_armor">Allow Arena Armor (NO WORK)</string>
+    <string name="armor_set_search_allow_event_armor">Allow Event Armor (NO WORK)</string>
+    <string name="armor_set_search_allow_excavated_armor">Allow Excavated Armor (NO WORK)</string>
+    <string name="armor_set_search_allow_excavated_weapon">Allow Excavated Weapon (NO WORK)</string>
+    <string name="armor_set_search_allow_lower_tier_armor">Allow Lower Tier Armor (NO WORK)</string>
+    <string name="armor_set_search_add_skill_button">Add Skill</string>
+    <string name="armor_set_search_button">Search</string>
+
 
     <string name="placeholder_unknown">Unknown</string>
 </resources>
