@@ -21,6 +21,7 @@ import android.widget.TextView;
 
 import com.daviancorp.android.data.classes.ArmorSetBuilderSession;
 import com.daviancorp.android.data.classes.Skill;
+import com.daviancorp.android.data.classes.Skill2;
 import com.daviancorp.android.data.classes.SkillTree;
 import com.daviancorp.android.data.database.DataManager;
 import com.daviancorp.android.data.database.SkillCursor;
@@ -41,7 +42,7 @@ public class ArmorSetBuilderSearchFragment extends Fragment implements ArmorSetB
     private ArmorSetBuilderSession session;
     private ArmorSetBuilderSearchSkillsAdapter listAdapter;
     private Context context;
-    private  ArrayList<SkillTree> st = new ArrayList<>();
+    private  ArrayList<Skill2> st = new ArrayList<>();
 
 
     Switch switchClass;
@@ -131,10 +132,8 @@ public class ArmorSetBuilderSearchFragment extends Fragment implements ArmorSetB
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == SKILL_PICKER_REQUEST_CODE){
-            long skillId = data.getLongExtra("skillId", -1);
-            long skillPoints = data.getIntExtra("skillPoints", -1);
-            long skillTreeId = data.getLongExtra("skillTreeId", -1);
-            if (skillTreeId > -1) st.add(DataManager.get(context).getSkillTree(skillTreeId));
+            Skill2 s = data.getParcelableExtra("Skill2");
+            st.add(s);
             listAdapter.notifyDataSetChanged();
         }
         else {
@@ -142,26 +141,9 @@ public class ArmorSetBuilderSearchFragment extends Fragment implements ArmorSetB
         }
     }
 
-    //    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-//        super.onActivityResult(requestCode, resultCode, data);
-//
-//        if (requestCode == 1){
-//            if(resultCode == Activity.RESULT_OK){
-//                //here is your result
-//                String result=data.getStringExtra("result");
-//                Toast.makeText(context, result, Toast.LENGTH_SHORT).show();
-//            }
-//            if (resultCode == Activity.RESULT_CANCELED) {
-//                //Write your code if there's no result
-//                Toast.makeText(context, "Nothing Returned!", Toast.LENGTH_SHORT).show();
-//            }
-//        }
-//    }
+    private static class ArmorSetBuilderSearchSkillsAdapter extends ArrayAdapter<Skill2> implements ListAdapter {
 
-
-    private static class ArmorSetBuilderSearchSkillsAdapter extends ArrayAdapter<SkillTree> implements ListAdapter {
-
-        public ArmorSetBuilderSearchSkillsAdapter(Context context, ArmorSetBuilderSession s, List<SkillTree> objects) {
+        public ArmorSetBuilderSearchSkillsAdapter(Context context, ArmorSetBuilderSession s, List<Skill2> objects) {
             super(context, R.layout.fragment_armor_set_builder_search_item, objects);
         }
 
@@ -179,7 +161,6 @@ public class ArmorSetBuilderSearchFragment extends Fragment implements ArmorSetB
             deleteBtn.setOnClickListener(new View.OnClickListener(){
                 @Override
                 public void onClick(View v) {
-                    //do something
                     remove(getItem(position));
                     notifyDataSetChanged();
                 }

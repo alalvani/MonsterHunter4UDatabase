@@ -1,6 +1,7 @@
 package com.daviancorp.android.data.database;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import android.content.Context;
 
@@ -855,16 +856,26 @@ public class DataManager {
 
     public ArrayList<Skill2> querySkill2Array() {
         ArrayList<Skill2> skills = new ArrayList<>();
-        Skill2Cursor cursor = mHelper.queryAllSkill2();
-        cursor.moveToFirst();
+        SkillTreeCursor stCursor = querySkillTrees();
+        stCursor.moveToFirst();
 
-        while(!cursor.isAfterLast()) {
-            skills.add(cursor.getSkill());
-            cursor.moveToNext();
+        while(!stCursor.isAfterLast()){
+            SkillTree st = stCursor.getSkillTree();
+            SkillCursor cursor = querySkillFromTree(st.getId());
+            cursor.moveToFirst();
+            while(!cursor.isAfterLast()){
+                Skill2 s = new Skill2(cursor.getSkill(), st);
+                skills.add(s);
+                cursor.moveToNext();
+            }
+            cursor.close();
+            stCursor.moveToNext();
         }
-        cursor.close();
+        stCursor.close();
+
         return skills;
     }
+
 	/* Get a Cursor that has a list of all Skills from a specific SkillTree */
 	public SkillCursor querySkillFromTree(long id) {
 		return mHelper.querySkillFromTree(id);

@@ -49,12 +49,13 @@ public class SkillPickerActivity extends Activity {
         //super.enableDrawerIndicator();
     }
 
-    public void callback(long skillId, int skillPoints, long skillTreeId)
+    public void callback(Skill2 s)
     {
         Intent resultIntent = new Intent();
-        resultIntent.putExtra("skillId", skillId);
-        resultIntent.putExtra("skillPoints", skillPoints);
-        resultIntent.putExtra("skillTreeId", skillTreeId);
+        resultIntent.putExtra("skillId", s.getId());
+        resultIntent.putExtra("skillPoints", s.getRequiredPoints());
+        resultIntent.putExtra("skillTreeId", s.getSkillTree().getId());
+        resultIntent.putExtra("Skill2", s);
         setResult(RESULT_OK, resultIntent);
         finish();
     }
@@ -77,27 +78,15 @@ public class SkillPickerActivity extends Activity {
             TextView pts  = (TextView) itemView.findViewById(R.id.pts);
             TextView desc = (TextView) itemView.findViewById(R.id.description);
 
-            Skill2 s = getItem(position);
+            final Skill2 s = getItem(position);
             name.setText(s.getName());
             pts.setText( s.getSkillTree().getName() + ": " + s.getRequiredPoints());
             desc.setText(s.getDescription());
 
             //itemView.setOnClickListener(new SkillClickListener(getContext(), getItem(position).getSkillTree().getId()));
             itemView.setOnClickListener(new View.OnClickListener() {
-
                 @Override
-                public void onClick(View view) {
-                    // returing result back
-//                    Intent resultIntent = new Intent();
-//                    resultIntent.putExtra("skillId", s.getName());
-//                    resultIntent.putExtra("skillPoints", s.getRequiredPoints());
-//                    resultIntent.putExtra("skillTreeId", s.getSkillTree().getId());
-                    //setResult(RESULT_OK, resultIntent);
-                    //finish();
-                    //callback(s.getId(), s.getRequiredPoints(), s.getSkillTree().getId());
-                    // if you don't want to return any result
-                    // setResult(RESULT_CANCELED, resultIntent);
-                }
+                public void onClick(View view) {callback(s);}
             });
             return itemView;
         }

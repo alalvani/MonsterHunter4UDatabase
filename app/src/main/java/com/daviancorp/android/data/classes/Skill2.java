@@ -1,9 +1,12 @@
 package com.daviancorp.android.data.classes;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 /*
  * Class for Skill
  */
-public class Skill2 {
+public class Skill2 implements Parcelable {
 
 	private long id;				// id
 	private SkillTree skillTree;	// SkillTree; unused at the moment
@@ -22,7 +25,30 @@ public class Skill2 {
         this.skillTree = new SkillTree();
 	}
 
-	/* Getters and Setters */
+    public Skill2(Skill s) {
+        this.id = s.getId();
+        this.required_points = s.getRequiredPoints();
+        this.name = s.getName();
+        this.jpn_name = s.getJpnName();
+        this.description = s.getDescription();
+        this.skillTree = new SkillTree();
+    }
+
+    public Skill2(Skill s, SkillTree st) {
+        this(s);
+        this.skillTree = st;
+    }
+
+    public Skill2(Parcel in){
+        this.id = in.readLong();
+        this.required_points = in.readInt();
+        this.name = in.readString();
+        this.jpn_name = in.readString();
+        this.description = in.readString();
+        this.skillTree = (SkillTree) in.readValue(SkillTree.class.getClassLoader());
+    }
+
+    /* Getters and Setters */
 	public long getId() {
 		return id;
 	}
@@ -70,4 +96,33 @@ public class Skill2 {
     public SkillTree getSkillTree(){
         return skillTree;
     }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+
+        dest.writeLong(this.id);
+        dest.writeInt(this.required_points);
+        dest.writeString(this.name);
+        dest.writeString(this.jpn_name);
+        dest.writeString(this.description);
+        dest.writeValue(this.skillTree);
+    }
+
+    public static final Parcelable.Creator<Skill2> CREATOR= new Parcelable.Creator<Skill2>() {
+
+        @Override
+        public Skill2 createFromParcel(Parcel source) {
+            return new Skill2(source);  //using parcelable constructor
+        }
+
+        @Override
+        public Skill2[] newArray(int size) {
+            return new Skill2[size];
+        }
+    };
 }

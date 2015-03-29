@@ -2266,10 +2266,36 @@ class MonsterHunterDatabaseHelper extends SQLiteAssetHelper {
 //	}	
 
     public Skill2Cursor queryAllSkill2(){
-        final String query = "select skills.* from skills, skill_trees where skills.skill_tree_id = skill_trees._id";
+        final String query = "select skill_trees._id,                 "
+                + "skill_trees.name,                            "
+                + "skill_trees.jpn_name,                        "
+                + "skills._id,                                  "
+                + "skills.skill_tree_id,                        "
+                + "skills.required_skill_tree_points,           "
+                + "skills.name,                                 "
+                + "skills.jpn_name,                             "
+                + "skills.description                           "
+                + "from skills, skill_trees                     "
+                + "where skills.skill_tree_id = skill_trees._id "
+                + "order by skills.name                          ";
         return new Skill2Cursor(getReadableDatabase().rawQuery(query, null));
     }
+    public Skill2Cursor queryAllSkills2() {
+        // "SELECT * FROM skills WHERE skill_tree_id = id"
 
+        QueryHelper qh = new QueryHelper();
+        qh.Distinct = false;
+        qh.Table = S.TABLE_SKILLS;
+        qh.Columns = null;
+        qh.Selection = null;
+        qh.SelectionArgs = null;
+        qh.GroupBy = null;
+        qh.Having = null;
+        qh.OrderBy = null;
+        qh.Limit = null;
+
+        return new Skill2Cursor(wrapHelper(qh));
+    }
 
     public SkillCursor queryAllSkills() {
         // "SELECT * FROM skills WHERE skill_tree_id = id"
