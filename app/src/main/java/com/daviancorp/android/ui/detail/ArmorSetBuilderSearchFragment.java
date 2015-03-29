@@ -25,6 +25,8 @@ import com.daviancorp.android.data.classes.SkillTree;
 import com.daviancorp.android.data.database.DataManager;
 import com.daviancorp.android.data.database.SkillCursor;
 import com.daviancorp.android.mh4udatabase.R;
+import com.daviancorp.android.ui.list.SkillPickerActivity;
+import com.daviancorp.android.ui.list.SkillTreeListActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,12 +36,13 @@ import java.util.List;
  */
 public class ArmorSetBuilderSearchFragment extends Fragment implements ArmorSetBuilderActivity.OnArmorSetActivityUpdateListener {
 
+    public static final int SKILL_PICKER_REQUEST_CODE = 782;
+
     private ArmorSetBuilderSession session;
     private ArmorSetBuilderSearchSkillsAdapter listAdapter;
-    private ArmorSetBuilderSearchSpinnerAdapter spinnerAdapter;
     private Context context;
-    private  ArrayList<Skill> st = new ArrayList<>();
-    private ArrayList<Skill> spinnerValues = new ArrayList<>();
+    private  ArrayList<SkillTree> st = new ArrayList<>();
+
 
     Switch switchClass;
     Switch switchGender;
@@ -52,8 +55,6 @@ public class ArmorSetBuilderSearchFragment extends Fragment implements ArmorSetB
     Button search;
     Button addSkill;
     protected ListView skillList;
-    protected Spinner mySpinner;
-    AutoCompleteTextView textView;
 
     public static ArmorSetBuilderSearchFragment newInstance() {
         Bundle args = new Bundle();
@@ -86,9 +87,15 @@ public class ArmorSetBuilderSearchFragment extends Fragment implements ArmorSetB
         switchExcavatedArmor = (Switch) header.findViewById(R.id.armor_builder_allow_excavated_armor);
         switchExcavatedWeapon = (Switch) header.findViewById(R.id.armor_builder_allow_excavated_weapon);
         switchLowerTierArmor = (Switch) header.findViewById(R.id.armor_builder_allow_lower_tier_armor);
+
         addSkill = (Button) header.findViewById(R.id.skill_list_add_skill_button);
-
-
+        addSkill.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(context, SkillPickerActivity.class);
+                startActivityForResult(intent, SKILL_PICKER_REQUEST_CODE);
+            }
+        });
 
         //generate some skills?
 //        for (int i = 1; i < 50; i++)
@@ -99,12 +106,6 @@ public class ArmorSetBuilderSearchFragment extends Fragment implements ArmorSetB
         skillList = (ListView) view.findViewById(R.id.armor_builder_search_skill_list);
         skillList.addHeaderView(header);
         skillList.setAdapter(listAdapter);
-
-
-
-
-
-
         return view;
     }
 
@@ -129,7 +130,16 @@ public class ArmorSetBuilderSearchFragment extends Fragment implements ArmorSetB
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        ((ArmorSetBuilderActivity) getActivity()).fragmentResultReceived(requestCode, resultCode, data);
+        if (requestCode == SKILL_PICKER_REQUEST_CODE){
+            long skillId = data.getLongExtra("skillId", -1);;
+            long skillPoints = data.getIntExtra("skillPoints", -1);;
+            long skillTreeId = data.getLongExtra("skillTreeId", -1);
+            if (skillTreeId > -1) st.add(DataManager.get(context).getSkillTree(skillTreeId));
+            listAdapter.notifyDataSetChanged();
+        }
+        else {
+           ((ArmorSetBuilderActivity) getActivity()).fragmentResultReceived(requestCode, resultCode, data);
+        }
     }
 
     //    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -149,9 +159,9 @@ public class ArmorSetBuilderSearchFragment extends Fragment implements ArmorSetB
 //    }
 
 
-    private static class ArmorSetBuilderSearchSkillsAdapter extends ArrayAdapter<Skill> implements ListAdapter {
+    private static class ArmorSetBuilderSearchSkillsAdapter extends ArrayAdapter<SkillTree> implements ListAdapter {
 
-        public ArmorSetBuilderSearchSkillsAdapter(Context context, ArmorSetBuilderSession s, List<Skill> objects) {
+        public ArmorSetBuilderSearchSkillsAdapter(Context context, ArmorSetBuilderSession s, List<SkillTree> objects) {
             super(context, R.layout.fragment_armor_set_builder_search_item, objects);
         }
 
@@ -177,46 +187,6 @@ public class ArmorSetBuilderSearchFragment extends Fragment implements ArmorSetB
             //itemView.setOnClickListener(new SkillClickListener(getContext(), getItem(position).getSkillTree().getId()));
 
             return itemView;
-        }
-
-    }
-
-    private class ArmorSetBuilderSearchSpinnerAdapter extends ArrayAdapter<Skill> implements AdapterView.OnItemSelectedListener {
-        public ArmorSetBuilderSearchSpinnerAdapter(Context context, ArmorSetBuilderSession s, List<Skill> objects) {
-            super(context, R.layout.fragment_armor_set_builder_search_spinner_item, objects);
-        }
-
-
-        @Override public View getDropDownView(int position, View cnvtView, ViewGroup prnt) {
-            return getCustomView(position, cnvtView, prnt);
-        }
-
-        @Override public View getView(int pos, View cnvtView, ViewGroup prnt) {
-            return getCustomView(pos, cnvtView, prnt);
-        }
-
-        public View getCustomView(int position, View convertView, ViewGroup parent) {
-
-            LayoutInflater inflater = (LayoutInflater.from(getContext()));
-            View itemView = inflater.inflate(R.layout.fragment_armor_set_builder_search_spinner_item, parent, false);
-
-            TextView main_text = (TextView) itemView.findViewById(R.id.search_spinner_skill_name);
-            main_text.setText(getItem(position).getName());
-            return itemView;
-        }
-
-
-        @Override
-        public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
-            // An item was selected. You can retrieve the selected item using
-            // parent.getItemAtPosition(pos)
-            addSkill(getItem(pos));
-        }
-
-
-        @Override
-        public void onNothingSelected(AdapterView<?> parent) {
-            // Another interface callback
         }
 
     }

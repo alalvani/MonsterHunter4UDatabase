@@ -1,10 +1,8 @@
 package com.daviancorp.android.data.database;
 
-import java.io.IOException;
 import java.util.ArrayList;
 
 import android.content.Context;
-import android.database.SQLException;
 
 import com.daviancorp.android.data.classes.ArenaQuest;
 import com.daviancorp.android.data.classes.ArenaReward;
@@ -27,6 +25,7 @@ import com.daviancorp.android.data.classes.MonsterToQuest;
 import com.daviancorp.android.data.classes.Quest;
 import com.daviancorp.android.data.classes.QuestReward;
 import com.daviancorp.android.data.classes.Skill;
+import com.daviancorp.android.data.classes.Skill2;
 import com.daviancorp.android.data.classes.SkillTree;
 import com.daviancorp.android.data.classes.Weapon;
 import com.daviancorp.android.data.classes.Wishlist;
@@ -854,7 +853,18 @@ public class DataManager {
 //		return mHelper.querySkill(id);
 //	}
 
+    public ArrayList<Skill2> querySkill2Array() {
+        ArrayList<Skill2> skills = new ArrayList<>();
+        Skill2Cursor cursor = mHelper.queryAllSkill2();
+        cursor.moveToFirst();
 
+        while(!cursor.isAfterLast()) {
+            skills.add(cursor.getSkill());
+            cursor.moveToNext();
+        }
+        cursor.close();
+        return skills;
+    }
 	/* Get a Cursor that has a list of all Skills from a specific SkillTree */
 	public SkillCursor querySkillFromTree(long id) {
 		return mHelper.querySkillFromTree(id);

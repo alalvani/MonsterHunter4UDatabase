@@ -359,7 +359,8 @@ class MonsterHunterDatabaseHelper extends SQLiteAssetHelper {
 	 */
 	private Cursor wrapJoinHelper(SQLiteQueryBuilder qb, QueryHelper qh) {
 //		Log.d(TAG, "qb: " + qb.buildQuery(_Columns, _Selection, _SelectionArgs, _GroupBy, _Having, _OrderBy, _Limit));
-		return qb.query(getReadableDatabase(), qh.Columns, qh.Selection, qh.SelectionArgs, qh.GroupBy, qh.Having, qh.OrderBy, qh.Limit);
+
+        return qb.query(getReadableDatabase(), qh.Columns, qh.Selection, qh.SelectionArgs, qh.GroupBy, qh.Having, qh.OrderBy, qh.Limit);
 	}
 
 	/*
@@ -2263,6 +2264,12 @@ class MonsterHunterDatabaseHelper extends SQLiteAssetHelper {
 //		
 //		return new SkillCursor(wrapHelper());
 //	}	
+
+    public Skill2Cursor queryAllSkill2(){
+        final String query = "select skills.* from skills, skill_trees where skills.skill_tree_id = skill_trees._id";
+        return new Skill2Cursor(getReadableDatabase().rawQuery(query, null));
+    }
+
 
     public SkillCursor queryAllSkills() {
         // "SELECT * FROM skills WHERE skill_tree_id = id"

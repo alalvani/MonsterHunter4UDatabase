@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/skill_picker_list_main"
+    style="@style/list_item_large"
+    android:orientation="horizontal" >
+
+    <ListView
+        android:id="@+id/skill_picker_list"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+
+</LinearLayout>
