@@ -17,7 +17,7 @@ public class ArmorSetBuilderPagerAdapter extends FragmentPagerAdapter {
 
     private ArmorSetBuilderSession session;
 
-    private String[] tabs = {"Pieces", "Skills", "Component", "Display"};
+    private String[] tabs = {"Pieces", "Skills", "Components", "Display"};
 
     public ArmorSetBuilderPagerAdapter(FragmentManager fm, ArmorSetBuilderSession session) {
         super(fm);

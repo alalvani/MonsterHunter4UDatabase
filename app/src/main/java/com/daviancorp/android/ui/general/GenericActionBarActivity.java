@@ -123,9 +123,9 @@ public abstract class GenericActionBarActivity extends ActionBarActivity {
                     case 10: // Armor Set Builder
                         intent = new Intent(getApplicationContext(), ArmorSetBuilderActivity.class);
                         break;
-                    case 11: // Armor Set Search
-                        intent = new Intent(getApplicationContext(), ArmorSetSearchActivity.class);
-                        break;
+//                    case 11: // Armor Set Search
+//                        intent = new Intent(getApplicationContext(), ArmorSetSearchActivity.class);
+//                        break;
                 }
                 final Intent finalIntent = intent;
                 actionOnCloseListener = new ActionOnCloseListener() {
