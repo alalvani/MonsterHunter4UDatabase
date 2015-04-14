@@ -88,6 +88,8 @@
     <string name="armor_set_builder_legs">Legs</string>
     <string name="armor_set_builder_skill_name">Skill</string>
     <string name="armor_set_builder_skill_points_total">Total</string>
+    <string name="armor_set_builder_component_name">Component</string>
+    <string name="armor_set_builder_component_total">Total</string>
 
     <string name="activity_armor_set_search">Armor Set Search</string>
     <string name="armor_set_search_switch_class">Armor Class</string>

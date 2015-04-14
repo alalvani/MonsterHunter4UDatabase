@@ -33,6 +33,7 @@ public class ArmorSetBuilderSession {
     private Decoration[][] decorations;
 
     private List<SkillTreePointsSet> skillTreePointsSets;
+    private List<ComponentPointsSet> componentPointsSets;
 
     private List<OnArmorSetChangedListener> changedListeners;
 
@@ -54,6 +55,7 @@ public class ArmorSetBuilderSession {
         }
 
         skillTreePointsSets = new ArrayList<>();
+        componentPointsSets = new ArrayList<>();
 
         changedListeners = new ArrayList<>();
     }
@@ -195,6 +197,10 @@ public class ArmorSetBuilderSession {
         return skillTreePointsSets;
     }
 
+    public List<ComponentPointsSet> getComponentPointsSets(){
+        return componentPointsSets;
+    }
+
 
 
     /**
@@ -274,6 +280,74 @@ public class ArmorSetBuilderSession {
         return skills;
     }
 
+    /**
+     * Adds any skills to the armor set's skill trees that were not there before, and removes those no longer there.
+     */
+    public void updateComponentPointsSets(Context context) {
+
+        /* A map of the current skill trees' ID's in the set and their associated componentPointsSets */
+        Map<Component, ComponentPointsSet> componentToComponentPointsSet = new HashMap<>();
+        componentPointsSets.clear();
+
+        for (int i = 0; i < armors.length; i++) {
+            /* A map of the current piece of armor's components, localized so we don't have to keep calling it */
+            Map<Component, Integer> armorComponentPoints = getComponentsFromArmorPiece(i, context);
+
+            for (Component c : armorComponentPoints.keySet()) {
+                /* The actual points set that we are working with that will be shown to the user */
+                ComponentPointsSet s;
+
+                /* If the armor set does not yet have this skill tree registered... */
+                if (!componentToComponentPointsSet.containsKey(c)) {
+                    Log.d("SetBuilder", "Registering skill tree..." + c.getComponent().getName());
+
+                    /*  We add it...  */
+                    s = new ComponentPointsSet();
+                    s.setComponent(c);
+                    componentPointsSets.add(s);
+
+                    componentToComponentPointsSet.put(c, s);
+                } else {
+                    Log.d("SetBuilder", "Skill tree " + c.getComponent().getName() + " already registered!");
+                    s = componentToComponentPointsSet.get(c); // Otherwise, we just find the skill tree set that's already there
+                }
+
+                s.setPoints(i, armorComponentPoints.get(c));
+            }
+        }
+    }
+
+    /**
+     * A helper method that converts an armor piece present in the current session into a map of the components it provides and the respective quantity in each.
+     * @param pieceIndex The piece of armor to get the components from.
+     * <li>0: Head
+     * <li>1: Body
+     * <li>2: Arms
+     * <li>3: Waist
+     * <li>4: Legs</li>
+     * @return A map of all the components the armor piece provides along with the quantity in each.
+     */
+    private Map<Component, Integer> getComponentsFromArmorPiece(int pieceIndex, Context context){
+        Map<Component, Integer> comps = new HashMap<>();
+        for (Component c : DataManager.get(context).queryComponentArrayCreated(armors[pieceIndex].getId())){
+            comps.put(c, c.getQuantity());
+        }
+
+        for (Decoration d : decorations[pieceIndex]){
+            for (Component c : DataManager.get(context).queryComponentArrayCreated(d.getId())){
+                if (comps.containsKey(c)){
+                    int points = comps.get(c) + c.getQuantity();
+                    comps.remove(c);
+                    comps.put(c, points);
+                }
+                else {
+                    comps.put(c, c.getQuantity());
+                }
+            }
+        }
+        return comps;
+    }
+
     public void addOnArmorSetChangedListener(OnArmorSetChangedListener l) {
         changedListeners.add(l);
     }
@@ -333,9 +407,13 @@ public class ArmorSetBuilderSession {
         skillTreePointsSets.add(numSlots);
     }
 
+
+
     public static interface OnArmorSetChangedListener {
         public void onArmorSetChanged();
     }
+
+
 
      /**
      * A container class that represents a skill tree as well as a specific number of points provided by each armor piece in a set.
@@ -408,6 +486,74 @@ public class ArmorSetBuilderSession {
 
         public void setStatName(String statName) {
             this.statName = statName;
+        }
+
+        public void setPoints(int pieceIndex, int piecePoints) {
+            points[pieceIndex] = piecePoints;
+        }
+    }
+
+    /**
+     * A container class that represents a skill tree as well as a specific number of points provided by each armor piece in a set.
+     */
+    public static class ComponentPointsSet {
+
+        private Component c;
+        private int[] points;
+
+        public ComponentPointsSet() {
+            points = new int[5];
+        }
+
+        public Component getComponent() {
+            return c;
+        }
+
+        public String getStatName() {
+            return c.getComponent().getName();
+        }
+
+        public int getHeadPoints() {
+            return points[HEAD];
+        }
+
+        public int getBodyPoints() {
+            return points[BODY];
+        }
+
+        public int getArmsPoints() {
+            return points[ARMS];
+        }
+
+        public int getWaistPoints() {
+            return points[WAIST];
+        }
+
+        public int getLegsPoints() {
+            return points[LEGS];
+        }
+
+        public int getPoints(int pieceIndex) {
+            if (pieceIndex < 5) {
+                return points[pieceIndex];
+            } else {
+                throw new IllegalArgumentException("Please use a number from 0 to 4 when selecting an armor piece index.");
+            }
+        }
+
+        /**
+         * @return The total number of skill points provided to the skill by all pieces in the set.
+         */
+        public int getTotal() {
+            int total = 0;
+            for (int piecePoints : points) {
+                total += piecePoints;
+            }
+            return total;
+        }
+
+        public void setComponent(Component c) {
+            this.c = c;
         }
 
         public void setPoints(int pieceIndex, int piecePoints) {
