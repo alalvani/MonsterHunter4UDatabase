@@ -4,6 +4,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import com.daviancorp.android.data.classes.ArmorSetBuilderSession;
+import com.daviancorp.android.ui.detail.ArmorSetBuilderFashionHunterFragment;
 import com.daviancorp.android.ui.detail.ArmorSetBuilderFragment;
 import com.daviancorp.android.ui.detail.ArmorSetSearchFragment;
 import com.daviancorp.android.ui.list.ArmorSetBuilderSkillsListFragment;
@@ -33,7 +34,7 @@ public class ArmorSetBuilderPagerAdapter extends FragmentPagerAdapter {
                 return ArmorSetBuilderSkillsListFragment.newInstance(session);
             case 2:
                 // Fashion Hunter view tab
-                return ArmorSetBuilderSkillsListFragment.newInstance(session);
+                return ArmorSetBuilderFashionHunterFragment.newInstance(session);
             case 3:
                 // Components Tab
                 return ArmorSetBuilderSkillsListFragment.newInstance(session);

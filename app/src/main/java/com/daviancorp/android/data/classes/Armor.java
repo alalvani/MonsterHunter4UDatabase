@@ -18,7 +18,7 @@ public class Armor extends Item{
 	private String gender;			// Which gender can equip
 	private String hunter_type;		// Which hunter type can equip: Blademaster/Gunner
 	private int num_slots;			// Number of slots
-	
+
 	/* Default Constructor */
 	public Armor() {
 		super();					// Initialize variables from Item
@@ -122,6 +122,10 @@ public class Armor extends Item{
 	public void setNumSlots(int num_slots) {
 		this.num_slots = num_slots;
 	}
+
+    public long getImageId() {
+        return Math.max(1+((this.getId()-1914)/5), 530);
+    }
 
 	@Override
 	public String toString(){

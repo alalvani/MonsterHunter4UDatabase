@@ -37,7 +37,7 @@ public class ArmorCursor extends CursorWrapper {
 		String gender = getString(getColumnIndex(S.COLUMN_ARMOR_GENDER));
 		String hunter_type = getString(getColumnIndex(S.COLUMN_ARMOR_HUNTER_TYPE));
 		int num_slots = getInt(getColumnIndex(S.COLUMN_ARMOR_NUM_SLOTS));
-		
+
 		armor.setSlot(slot);
 		armor.setDefense(defense);
 		armor.setMaxDefense(max_defense);

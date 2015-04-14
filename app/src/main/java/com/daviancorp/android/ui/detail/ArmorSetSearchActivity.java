@@ -2,6 +2,7 @@ package com.daviancorp.android.ui.detail;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.Menu;
@@ -9,10 +10,11 @@ import android.view.Menu;
 import com.daviancorp.android.data.classes.ArmorSetBuilderSession;
 import com.daviancorp.android.mh4udatabase.R;
 import com.daviancorp.android.ui.adapter.ArmorSetSearchPagerAdapter;
+import com.daviancorp.android.ui.general.GenericActivity;
 import com.daviancorp.android.ui.general.GenericTabActivity;
 import com.daviancorp.android.ui.list.adapter.MenuSection;
 
-public class ArmorSetSearchActivity extends GenericTabActivity {
+public class ArmorSetSearchActivity extends GenericActivity {
     public static final String EXTRA_FROM_SET_BUILDER = "com.daviancorp.android.ui.detail.from_set_builder";
     public static final String EXTRA_REMAINING_SOCKETS = "com.daviancorp.android.ui.detail.remaining_sockets";
     public static final String EXTRA_PIECE_INDEX = "com.daviancorp.android.ui.detail.piece_index";
@@ -28,6 +30,11 @@ public class ArmorSetSearchActivity extends GenericTabActivity {
     private ArmorSetSearchPagerAdapter adapter;
 
     @Override
+    protected Fragment createFragment() {
+        return null;
+    }
+
+    @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
@@ -40,7 +47,7 @@ public class ArmorSetSearchActivity extends GenericTabActivity {
         adapter = new ArmorSetSearchPagerAdapter(getSupportFragmentManager(), session);
         viewPager.setAdapter(adapter);
 
-        mSlidingTabLayout.setViewPager(viewPager);
+        //mSlidingTabLayout.setViewPager(viewPager);
 
     }
 
