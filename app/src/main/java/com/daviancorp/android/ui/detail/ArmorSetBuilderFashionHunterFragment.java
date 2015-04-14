@@ -10,6 +10,7 @@ import android.graphics.drawable.Drawable;
 import android.graphics.drawable.LayerDrawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -83,28 +84,17 @@ public class ArmorSetBuilderFashionHunterFragment extends Fragment implements Ar
         /* Actually add images now to the end of the array */
         for (int i = 0; i < a.length; i++) {
             if (a[i].getId() > 0) {
+                index++;
+                Log.d("loading", "female_armor/"+a[i].getFileLocation());
                 try {
-                    switch(a[i].getSlot()){
-                        case "Head":
-                            layers[++index] = loadBitmap("female_armor/Head/female_armor_head_" + a[i].getImageId() + ".png");
-                            break;
-                        case "Body":
-                            layers[++index] = loadBitmap("female_armor/Body/female_armor_body_" + a[i].getImageId() + ".png");
-                            break;
-                        case "Arms":
-                            layers[++index] = loadBitmap("female_armor/Arms/female_armor_arms_" + a[i].getImageId() + ".png");
-                            break;
-                        case "Waist":
-                            layers[++index] = loadBitmap("female_armor/Waist/female_armor_waist_" + a[i].getImageId() + ".png");
-                            break;
-                        case "Legs":
-                            layers[++index] = loadBitmap("female_armor/Legs/female_armor_legs_" + a[i].getImageId() + ".png");
-                            break;
-                    }
+
+                    layers[index] = loadBitmap("female_armor/"+a[i].getFileLocation());
+
                 }
                 catch (IOException e) {
                     //TODO: check to see if we need a ++ here..
-                    layers[++index] = layers[0];
+                    Log.d("Failed to load", "female_armor/"+a[i].getFileLocation());
+                    layers[index] = layers[0];
                 }
             }
         }
