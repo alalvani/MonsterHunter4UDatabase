@@ -41,6 +41,7 @@ public class DecorationDetailActivity extends GenericTabActivity {
         // Initialization
         viewPager = (ViewPager) findViewById(R.id.pager);
         mAdapter = new DecorationDetailPagerAdapter(getSupportFragmentManager(), id);
+        viewPager.setOffscreenPageLimit(mAdapter.getCount());
         viewPager.setAdapter(mAdapter);
 
         mSlidingTabLayout.setViewPager(viewPager);
