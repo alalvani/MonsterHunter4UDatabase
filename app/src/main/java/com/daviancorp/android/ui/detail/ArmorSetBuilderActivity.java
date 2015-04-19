@@ -48,6 +48,8 @@ public class ArmorSetBuilderActivity extends GenericTabActivity implements Armor
         // Initialization
         viewPager = (ViewPager) findViewById(R.id.pager);
         adapter = new ArmorSetBuilderPagerAdapter(getSupportFragmentManager(), session);
+        /* Forces all tabs to be initalized for armor updates. */
+        viewPager.setOffscreenPageLimit(adapter.getCount());
         viewPager.setAdapter(adapter);
 
         mSlidingTabLayout.setViewPager(viewPager);
