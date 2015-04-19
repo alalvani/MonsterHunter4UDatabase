@@ -14,6 +14,8 @@ import android.widget.TextView;
 import com.daviancorp.android.data.classes.ArmorSetBuilderSession;
 import com.daviancorp.android.data.classes.Component;
 import com.daviancorp.android.mh4udatabase.R;
+import com.daviancorp.android.ui.ClickListeners.ItemClickListener;
+import com.daviancorp.android.ui.ClickListeners.SkillClickListener;
 import com.daviancorp.android.ui.detail.ArmorSetBuilderActivity;
 
 import java.util.List;
@@ -110,7 +112,14 @@ public class ArmorSetBuilderComponentFragment extends Fragment implements ArmorS
             totalPoints.setText(String.valueOf(getItem(position).getTotal()));
             
             //itemView.setOnClickListener(new SkillClickListener(getContext(), getItem(position).getSkillTree().getId()));
+            if (getItem(position).getComponent() != null){
+                ItemClickListener s = new ItemClickListener(
+                        getContext(),
+                        getItem(position).getComponent().getComponent().getId(),
+                        true);
+                itemView.setOnClickListener(s);
 
+            }
             return itemView;
         }
     }

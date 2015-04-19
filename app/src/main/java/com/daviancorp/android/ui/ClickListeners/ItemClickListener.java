@@ -12,6 +12,7 @@ import com.daviancorp.android.ui.detail.ItemDetailActivity;
 public class ItemClickListener implements View.OnClickListener {
     private Context c;
     private Long id;
+    private boolean fromSetbuilder = false;
 
     public ItemClickListener(Context context, Long id) {
         super();
@@ -19,10 +20,16 @@ public class ItemClickListener implements View.OnClickListener {
         this.c = context;
     }
 
+    public ItemClickListener(Context context, Long id, boolean fromSetBuilder){
+        this(context, id);
+        this.fromSetbuilder = fromSetBuilder;
+    }
+
     @Override
     public void onClick(View v) {
         Intent i = new Intent(c, ItemDetailActivity.class);
         i.putExtra(ItemDetailActivity.EXTRA_ITEM_ID, id);
+        if (fromSetbuilder) i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         c.startActivity(i);
     }
 }
